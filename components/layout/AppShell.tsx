@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { BarChart3, FileText, LayoutDashboard, LogOut, Menu, Presentation, Printer, Settings, Share2, ShieldCheck, Users, X } from 'lucide-react'
+import { BarChart3, FileText, LayoutDashboard, LogOut, Menu, Presentation, Printer, Settings, Share2, ShieldCheck, Upload, Users, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
@@ -17,6 +17,7 @@ const MENU = [
   { href: '/kohort', label: 'Analisis Kohort', icon: BarChart3, roles: ['ADMIN', 'PK1', 'PPD', 'GURU_KELAS'] as Role[] },
   { href: '/present', label: 'Presentation Mode', icon: Presentation, roles: ALL },
   { href: '/feeder-access', label: 'Feeder Access', icon: Share2, roles: ['ADMIN', 'PK1'] as Role[] },
+  { href: '/import', label: 'Import Data', icon: Upload, roles: ['ADMIN', 'PK1', 'GURU_KELAS'] as Role[] },
   { href: '/cetak', label: 'Cetak Pukal', icon: Printer, roles: ['ADMIN', 'PK1', 'GURU_KELAS', 'FEEDER'] as Role[] },
   { href: '/tetapan', label: 'Tetapan', icon: Settings, roles: ALL },
 ]

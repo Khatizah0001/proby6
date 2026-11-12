@@ -8,7 +8,7 @@ export interface Murid {
   masalah_kesihatan?: string | null; photo_url?: string | null; status_profil: StatusProfil
 }
 export interface Akademik { purata: number | null; tafsiran: string | null }
-export interface UpDlp6 { english: number | null; science: number | null; mathematics: number | null; purata: number | null; risiko: 'RENDAH' | 'SEDERHANA' | 'TINGGI' | null }
+export interface UpDlp6 { english: number | null; science: number | null; mathematics: number | null; purata: number | null; risiko: 'RENDAH' | 'SEDERHANA' | 'TINGGI' | null; slip_path?: string | null; slip_url?: string | null }
 export interface TigaM { membaca_bm: Tahap3M | null; menulis_bm: Tahap3M | null; reading_bi: Tahap3M | null; writing_bi: Tahap3M | null; mengira: Tahap3M | null; status_keseluruhan: string | null }
 export interface Psikometrik { [k: string]: number | string | null | undefined; dominan: string | null }
 export interface Kokurikulum { unit_beruniform?: string | null; jawatan_unit?: string | null; kelab_persatuan?: string | null; sukan_permainan?: string | null; pencapaian: string[] }

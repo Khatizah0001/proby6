@@ -10,7 +10,7 @@ export default async function FeederAccessPage() {
   const [{ data: feeders }, { data: access }, { data: murid }] = await Promise.all([
     supabase.from('feeder_school').select('id,nama,sekolah_menengah').order('nama'),
     supabase.from('feeder_access').select('feeder_id,murid_id,can_print,status'),
-    supabase.from('murid').select('id,nama_murid,kelas,feeder_id,status_profil').order('kelas').order('nama_murid'),
+    supabase.from('murid').select('id,nama_murid,kelas,feeder_id,status_profil').eq('aktif', true).order('kelas').order('nama_murid'),
   ])
   return <FeederManager userId={user.id} feeders={feeders ?? []} access={access ?? []} murid={murid ?? []} />
 }

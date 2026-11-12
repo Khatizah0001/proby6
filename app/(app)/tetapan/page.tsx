@@ -1,5 +1,6 @@
 import { FileText, ShieldCheck, User } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArchivedList, ChangePassword } from '@/components/SettingsTools'
 import { getCurrentUser } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 
@@ -8,6 +9,8 @@ const ROLE: Record<string, string> = { ADMIN: 'Pentadbir', PK1: 'PK1 Pentadbiran
 export default async function TetapanPage() {
   const user = await getCurrentUser(), supabase = createClient()
   const staff = user.role === 'ADMIN' || user.role === 'PK1'
+  const archivedRes = staff ? await supabase.from('murid').select('id,nama_murid,kelas').eq('aktif', false).order('nama_murid') : { data: [] }
+  const archived = (archivedRes.data ?? []) as { id: string; nama_murid: string; kelas: string }[]
   const [users, audit] = await Promise.all([
     user.role === 'ADMIN' ? supabase.from('users').select('id,nama,email,role,status').order('role') : Promise.resolve({ data: [] as { id: string; nama: string; email: string; role: string; status: string }[] }),
     staff ? supabase.from('audit_log').select('id,created_at,role,action,details,user:users(nama)').order('created_at', { ascending: false }).limit(50) : Promise.resolve({ data: [] }),
@@ -24,6 +27,8 @@ export default async function TetapanPage() {
         <Card className="rounded-3xl"><CardHeader><CardTitle className="flex items-center gap-2 text-[15px] font-extrabold"><ShieldCheck className="h-4 w-4 text-violet-600" />Privasi &amp; Keselamatan</CardTitle></CardHeader>
           <CardContent><ul className="list-disc space-y-1 pl-5 text-sm"><li>No. KP &amp; telefon hanya disimpan dan dipaparkan dalam bentuk masked</li><li>Feeder school: read-only, hanya murid yang dikongsi</li><li>Aktiviti view / print / share / present direkod</li><li>Kebenaran dikuatkuasakan oleh RLS di pangkalan data</li></ul></CardContent></Card>
       </div>
+      <ChangePassword />
+      {staff && <ArchivedList items={archived} />}
       {user.role === 'ADMIN' && (
         <Card className="rounded-3xl"><CardHeader><CardTitle className="text-[15px] font-extrabold">Pengguna ({userRows.length})</CardTitle></CardHeader><CardContent className="overflow-x-auto"><table className="w-full text-sm"><thead><tr className="text-left text-xs uppercase text-slate-500"><th className="py-2">Nama</th><th>E-mel</th><th>Peranan</th><th>Status</th></tr></thead><tbody>{userRows.map((u) => <tr key={u.id} className="border-t"><td className="py-2.5 font-semibold">{u.nama}</td><td>{u.email}</td><td><span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-bold text-violet-700">{u.role}</span></td><td>{u.status}</td></tr>)}</tbody></table></CardContent></Card>
       )}

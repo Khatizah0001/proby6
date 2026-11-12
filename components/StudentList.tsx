@@ -36,7 +36,7 @@ export function StudentList({ items, canEdit, showClassFilter = true }: { items:
             return (
               <div key={m.id} className="group flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl">
                 <div className="flex items-center gap-3">
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blue-600 to-violet-600 text-sm font-extrabold text-white">{initials(m.nama_murid)}</div>
+                  {m.photo_url ? <img src={m.photo_url} alt={`Gambar ${m.nama_murid}`} className="h-12 w-12 shrink-0 rounded-2xl object-cover" /> : <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blue-600 to-violet-600 text-sm font-extrabold text-white">{initials(m.nama_murid)}</div>}
                   <div className="min-w-0"><div className="truncate text-sm font-bold">{m.nama_murid}</div><div className="text-xs text-slate-500">{maskIC(m.no_kp_masked)} · {m.kelas}</div></div>
                 </div>
                 <div className="flex flex-wrap gap-1.5"><StatusBadge s={m.status_profil} />{flags.map((f) => <span key={f} className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-[11px] font-bold text-red-700"><AlertTriangle className="h-3 w-3" />{f}</span>)}</div>

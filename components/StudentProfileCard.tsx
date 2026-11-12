@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { AlertTriangle, Activity, BookOpenCheck, CalendarCheck, Edit3, HeartPulse, Home, Presentation, Printer, ShieldAlert, Sparkles, Trophy, User, Brain, type LucideIcon } from 'lucide-react'
+import { AlertTriangle, Activity, FileText, BookOpenCheck, CalendarCheck, Edit3, HeartPulse, Home, Presentation, Printer, ShieldAlert, Sparkles, Trophy, User, Brain, type LucideIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -81,7 +81,7 @@ export function StudentProfileCard({ data, insight, canEdit, canPrint, dark, rea
         <div className="pointer-events-none absolute -bottom-28 -right-20 h-80 w-80 rounded-full bg-teal-400/30 blur-3xl" />
         <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center">
           <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-[30px] border-[3px] border-white/50 bg-white/20 shadow-lg">
-            {m.photo_url ? <Image src={m.photo_url} alt={`Gambar ${m.nama_murid}`} fill sizes="112px" className="object-cover" />
+            {m.photo_url ? <Image src={m.photo_url} alt={`Gambar ${m.nama_murid}`} fill sizes="112px" unoptimized className="object-cover" />
               : <div className="grid h-full w-full place-items-center text-4xl font-extrabold">{initials(m.nama_murid)}</div>}
           </div>
           <div className="min-w-0 flex-1">
@@ -144,6 +144,7 @@ export function StudentProfileCard({ data, insight, canEdit, canPrint, dark, rea
           {akademik || updlp6 ? (<>
             <Meter dark={D} label={`Purata Akademik${akademik?.tafsiran ? ` (${label(akademik.tafsiran)})` : ''}`} value={akademik?.purata} />
             <Meter dark={D} label="English" value={updlp6?.english} /><Meter dark={D} label="Science" value={updlp6?.science} /><Meter dark={D} label="Mathematics" value={updlp6?.mathematics} />
+            {updlp6?.slip_url && <a href={updlp6.slip_url} target="_blank" rel="noreferrer" className="mb-2 mr-2 inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700 hover:bg-blue-200"><FileText className="h-3.5 w-3.5" />Lihat Slip UP-DLP6</a>}
             {updlp6?.risiko && <Badge className={cn('mt-1 rounded-full', updlp6.risiko === 'TINGGI' ? 'bg-red-100 text-red-700' : updlp6.risiko === 'SEDERHANA' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700')}>Risiko UP-DLP6: {label(updlp6.risiko)}</Badge>}
           </>) : <Empty />}
         </Section>

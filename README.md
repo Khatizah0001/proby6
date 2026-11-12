@@ -1,4 +1,7 @@
-# ProBy6 — Fasa 1 + 2 (Next.js 14 + Supabase)
+# ProBy6 — Fasa 1–3 (Next.js 14 + Supabase)
+
+Fasa 3: muat naik gambar murid & slip UP-DLP6 (storan peribadi + RLS), tambah/arkib murid, import Excel/CSV (murid, kehadiran, UP-DLP6), tukar kata laluan.
+Migrasi pangkalan data 0006 (kolum `aktif`, `slip_path`, bucket `murid-foto` & `updlp6-slip`) sudah diterapkan pada projek Supabase ProBy6.
 
 Fasa 2 lengkap: middleware sesi, shell + sidebar, dashboard 5 peranan, senarai & profil murid, borang kemas kini (Zod), analisis kohort, Presentation Mode, Feeder Access, Cetak Pukal, Tetapan/Audit Log.
 

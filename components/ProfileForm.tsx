@@ -7,6 +7,8 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/client'
+import { PhotoUpload } from '@/components/PhotoUpload'
+import { SlipUpload } from '@/components/SlipUpload'
 import { toProfileClient } from '@/lib/profile-client'
 import { cn } from '@/lib/utils'
 import { computeStatus, maskIC, maskPhone } from '@/lib/student-utils'
@@ -78,7 +80,7 @@ export function ProfileForm({ data, feeders }: { data: StudentProfileData; feede
         const r = await supabase.from(s.table).upsert({ murid_id: id, ...row }, { onConflict: 'murid_id' }); if (r.error) throw new Error(`${s.label}: ${r.error.message}`)
       }
       // --- kira semula status kelengkapan ---
-      const { data: fresh } = await supabase.from('murid').select('*, akademik(id), updlp6(id), tiga_m(id), psikometrik(id), kokurikulum(id), kesihatan(id), kehadiran(id), ssdm(id)').eq('id', id).single()
+      const { data: fresh } = await supabase.from('murid').select('*, akademik(id), updlp6(id,purata,slip_path), tiga_m(id), psikometrik(id), kokurikulum(id), kesihatan(id), kehadiran(id), ssdm(id)').eq('id', id).single()
       if (fresh) {
         const p = toProfileClient(fresh), st = computeStatus(p.siap, p.jumlah, fresh.status_profil)
         if (st !== fresh.status_profil) { const r = await supabase.from('murid').update({ status_profil: st }).eq('id', id); if (r.error) throw new Error(r.error.message) }
@@ -93,6 +95,8 @@ export function ProfileForm({ data, feeders }: { data: StudentProfileData; feede
         <div><h1 className="text-xl font-extrabold">Kemas Kini Profil</h1><p className="text-sm text-slate-500">{data.murid.nama_murid} · {data.murid.kelas}</p></div>
         <Button className="ml-auto" onClick={save} disabled={saving}>{saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}Simpan Profil</Button></div>
       <div role="tablist" className="flex flex-wrap gap-2">{SECTIONS.map((s) => <button key={s.key} role="tab" aria-selected={tab === s.key} onClick={() => setTab(s.key)} className={cn('rounded-xl px-4 py-2 text-xs font-bold transition', tab === s.key ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-md' : 'bg-white text-slate-500 hover:text-blue-600')}>{s.label}</button>)}</div>
+      {tab === 'murid' && <PhotoUpload muridId={data.murid.id} nama={data.murid.nama_murid} currentUrl={data.murid.photo_url} />}
+      {tab === 'updlp6' && <SlipUpload muridId={data.murid.id} slipUrl={data.updlp6?.slip_url} />}
       <Card className="rounded-3xl"><CardContent className="grid gap-4 p-6 sm:grid-cols-2 xl:grid-cols-3">
         {cur.fields.map((f) => {
           const opts = f.k === 'feeder_id' ? feeders.map((x) => ({ v: x.id, l: x.nama })) : f.o?.map((x) => ({ v: x, l: x }))
