@@ -1,4 +1,4 @@
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 /** Klien pelayan (Server Components / Route Handlers). Sesi pengguna dibawa melalui cookie → RLS terpakai. */
@@ -7,7 +7,7 @@ export function createClient() {
   return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
     cookies: {
       getAll: () => store.getAll(),
-      setAll: (list) => { try { list.forEach(({ name, value, options }) => store.set(name, value, options)) } catch { /* Server Component: diabaikan, middleware yang refresh */ } },
+      setAll: (list: { name: string; value: string; options: CookieOptions }[]) => { try { list.forEach(({ name, value, options }) => store.set(name, value, options)) } catch { /* Server Component: diabaikan, middleware yang refresh */ } },
     },
   })
 }
